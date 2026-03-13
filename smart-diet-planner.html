@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Smart Diet Planner using BMI</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Righteous&display=swap" rel="stylesheet"/>
+<style>
+/* =====================================================
+   SMART DIET PLANNER — COLORFUL HEALTH EDITION 🌈
+   Every pixel bursts with health-inspired color.
+   NO white backgrounds. Full vivid gradients everywhere.
+===================================================== */
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Nunito',sans-serif;
+  background: linear-gradient(135deg,#0d1b2a 0%,#1a0a2e 50%,#0a1f0a 100%);
+  color:#fff;
+  overflow-x:hidden;
+  min-height:100vh;
+}
+a{text-decoration:none;color:inherit}
+ul{list-style:none}
+input[type=number]{-moz-appearance:textfield}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-track{background:#0d1b2a}
+::-webkit-scrollbar-thumb{background:linear-gradient(#00c896,#00a8ff);border-radius:4px}
+
+/* ── CONTAINER ── */
+.wrap{max-width:1100px;margin:0 auto;padding:0 24px}
+
+/* =====================================================
+   NAVBAR
+===================================================== */
+.nav{
+  position:sticky;top:0;z-index:999;
+  background:rgba(6,10,20,0.88);
+  backdrop-filter:blur(20px);
+  border-bottom:2px solid rgba(0,200,150,0.25);
+  padding:0 24px;
+}
+.nav-inner{
+  max-width:1100px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  height:64px;
+}
+.nav-logo{
+  font-family:'Righteous',cursive;
+  font-size:1.5rem;
+  background:linear-gradient(90deg,#00ffb3,#00c8ff,#ff6eb4);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  letter-spacing:1px;
+}
+.nav-links{display:flex;gap:6px;align-items:center}
+.nav-links a{
+  padding:8px 18px;border-radius:50px;font-weight:700;font-size:.88rem;
+  color:rgba(255,255,255,.75);transition:all .2s;
+}
+.nav-links a:hover{background:rgba(0,200,150,.18);color:#00ffb3}
+.nav-cta{
+  background:linear-gradient(135deg,#00c896,#00a8ff)!important;
+  color:#fff!important;padding:9px 22px!important;border-radius:50px!important;
+  font-weight:800!important;box-shadow:0 4px 18px rgba(0,200,150,.4)!important;
+  transition:transform .2s,box-shadow .2s!important;
+}
+.nav-cta:hover{transform:translateY(-2px)!important;box-shadow:0 8px 28px rgba(0,200,150,.6)!important}
+.nav-toggle{display:none;background:none;border:none;cursor:pointer;padding:4px}
+.nav-toggle span{display:block;width:24px;height:2px;background:#00ffb3;border-radius:2px;margin:5px 0;transition:.25s}
+
+/* =====================================================
+   HERO
+===================================================== */
+.hero{
+  position:relative;
+  min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;
+  overflow:hidden;
+  background:linear-gradient(145deg,#020917 0%,#0a1a10 30%,#120520 60%,#01111f 100%);
+  padding:100px 24px 80px;
+}
+
+/* big glowing orbs */
+.hero::before{
+  content:'';position:absolute;top:-200px;right:-200px;
+  width:700px;height:700px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,200,150,.35) 0%,transparent 65%);
+  animation:orbPulse 6s ease-in-out infinite;pointer-events:none;
+}
+.hero::after{
+  content:'';position:absolute;bottom:-180px;left:-180px;
+  width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,168,255,.3) 0%,transparent 65%);
+  animation:orbPulse 6s 2s ease-in-out infinite;pointer-events:none;
+}
+@keyframes orbPulse{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.15);opacity:1}}
+
+.hero-orb3{
+  position:absolute;top:30%;left:5%;width:300px;height:300px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,110,180,.22) 0%,transparent 65%);
+  animation:orbPulse 7s 1s ease-in-out infinite;pointer-events:none;
+}
+
+/* Grid overlay */
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(0,255,179,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,255,179,.04) 1px,transparent 1px);
+  background-size:50px 50px;pointer-events:none;
+}
+
+.hero-content{position:relative;z-index:2;max-width:700px}
+
+.hero-chip{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(0,255,179,.12);border:1px solid rgba(0,255,179,.3);
+  color:#00ffb3;font-size:.8rem;font-weight:800;letter-spacing:2px;
+  text-transform:uppercase;padding:7px 20px;border-radius:50px;
+  margin-bottom:24px;animation:fadeSlide .5s ease both;
+}
+.chip-dot{
+  width:7px;height:7px;background:#00ffb3;border-radius:50%;
+  animation:blink 1.8s ease-in-out infinite;
+}
+@keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.6)}}
+
+.hero-h1{
+  font-family:'Righteous',cursive;
+  font-size:clamp(2.6rem,6vw,4.8rem);
+  line-height:1.1;margin-bottom:18px;
+  animation:fadeSlide .55s .1s ease both;
+}
+.hero-h1 span{
+  display:block;
+  background:linear-gradient(90deg,#00ffb3 0%,#00c8ff 40%,#ff6eb4 80%,#ffdd00 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  background-size:200% 100%;animation:gradShift 4s ease-in-out infinite;
+}
+@keyframes gradShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+
+.hero-sub{
+  font-size:1.12rem;color:rgba(255,255,255,.72);margin-bottom:38px;line-height:1.8;
+  animation:fadeSlide .55s .2s ease both;
+}
+.hero-sub strong{color:#00ffb3}
+
+.hero-btns{
+  display:flex;flex-wrap:wrap;gap:14px;justify-content:center;
+  margin-bottom:44px;animation:fadeSlide .55s .28s ease both;
+}
+.btn-main{
+  display:inline-flex;align-items:center;gap:8px;
+  background:linear-gradient(135deg,#00c896 0%,#00a8ff 100%);
+  color:#fff;padding:15px 42px;border-radius:50px;
+  font-size:1.05rem;font-weight:800;border:none;cursor:pointer;
+  font-family:'Nunito',sans-serif;
+  box-shadow:0 6px 30px rgba(0,200,150,.5);
+  transition:transform .2s,box-shadow .2s;
+}
+.btn-main:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,200,150,.7)}
+.btn-out{
+  display:inline-flex;align-items:center;padding:15px 36px;border-radius:50px;
+  font-size:1rem;font-weight:700;color:rgba(255,255,255,.85);
+  border:2px solid rgba(255,255,255,.25);backdrop-filter:blur(8px);
+  transition:all .2s;
+}
+.btn-out:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.5)}
+
+/* hero stat pills */
+.hero-stats{
+  display:flex;flex-wrap:wrap;gap:12px;justify-content:center;
+  animation:fadeSlide .55s .35s ease both;
+}
+.hstat{
+  display:flex;align-items:center;gap:8px;
+  padding:10px 20px;border-radius:50px;font-size:.85rem;font-weight:700;
+  backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.1);
+}
+.hstat:nth-child(1){background:rgba(0,200,150,.18);color:#00ffb3;border-color:rgba(0,200,150,.3)}
+.hstat:nth-child(2){background:rgba(0,168,255,.18);color:#00c8ff;border-color:rgba(0,168,255,.3)}
+.hstat:nth-child(3){background:rgba(255,110,180,.18);color:#ff6eb4;border-color:rgba(255,110,180,.3)}
+.hstat:nth-child(4){background:rgba(255,221,0,.18);color:#ffdd00;border-color:rgba(255,221,0,.3)}
+
+/* floating food emojis */
+.floaters{position:absolute;inset:0;pointer-events:none;z-index:1}
+.floaters span{
+  position:absolute;font-size:2rem;
+  animation:floatUp 5s var(--d) ease-in-out infinite;
+  filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));
+}
+@keyframes floatUp{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-20px) rotate(10deg)}}
+
+@keyframes fadeSlide{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+
+/* =====================================================
+   SECTION SHARED
+===================================================== */
+.section{padding:90px 0 76px}
+
+.sec-eye{
+  display:block;text-align:center;
+  font-size:.72rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;
+  margin-bottom:10px;
+}
+.sec-title{
+  font-family:'Righteous',cursive;
+  font-size:clamp(2rem,4vw,2.8rem);
+  text-align:center;margin-bottom:12px;line-height:1.2;
+}
+.sec-sub{
+  text-align:center;font-size:1rem;
+  max-width:540px;margin:0 auto 52px;
+  opacity:.75;
+}
+
+/* =====================================================
+   CALCULATOR SECTION
+===================================================== */
+.calc-section{
+  background:linear-gradient(160deg,#071a2e 0%,#0a2e1a 50%,#1a071e 100%);
+  position:relative;overflow:hidden;
+}
+.calc-section::before{
+  content:'';position:absolute;top:-100px;left:-100px;
+  width:450px;height:450px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,200,150,.12) 0%,transparent 70%);
+  pointer-events:none;
+}
+.calc-section::after{
+  content:'';position:absolute;bottom:-80px;right:-80px;
+  width:380px;height:380px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,168,255,.1) 0%,transparent 70%);
+  pointer-events:none;
+}
+.calc-section .sec-eye{color:#00ffb3}
+.calc-section .sec-title{color:#fff}
+.calc-section .sec-sub{color:rgba(255,255,255,.65)}
+
+.calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;position:relative;z-index:1}
+
+/* Glass panels */
+.glass-panel{
+  border-radius:24px;padding:36px;
+  backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.1);
+  transition:transform .25s,box-shadow .25s;
+}
+.glass-panel:hover{transform:translateY(-4px)}
+
+.form-glass{
+  background:linear-gradient(145deg,rgba(0,30,20,.85),rgba(0,10,30,.85));
+  border-color:rgba(0,200,150,.25);
+  box-shadow:0 8px 40px rgba(0,200,150,.15);
+}
+.info-glass{
+  background:linear-gradient(145deg,rgba(0,20,40,.85),rgba(10,0,30,.85));
+  border-color:rgba(0,168,255,.2);
+  box-shadow:0 8px 40px rgba(0,168,255,.12);
+}
+
+.panel-head{
+  display:flex;align-items:center;gap:14px;
+  margin-bottom:26px;padding-bottom:18px;
+  border-bottom:1px solid rgba(255,255,255,.1);
+}
+.panel-head-icon{font-size:2.2rem}
+.panel-head-title{font-weight:800;font-size:1.05rem;color:#fff}
+.panel-head-sub{font-size:.8rem;color:rgba(255,255,255,.5);margin-top:2px}
+
+/* Input grid */
+.inp-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:20px}
+.inp-group{display:flex;flex-direction:column;gap:7px}
+.inp-label{font-size:.82rem;font-weight:800;color:rgba(255,255,255,.75);letter-spacing:.5px}
+
+.inp-wrap{
+  display:flex;align-items:center;
+  background:rgba(255,255,255,.07);
+  border:2px solid rgba(0,200,150,.2);
+  border-radius:12px;overflow:hidden;
+  transition:border-color .2s,box-shadow .2s;
+}
+.inp-wrap:focus-within{
+  border-color:#00c896;
+  box-shadow:0 0 0 4px rgba(0,200,150,.15);
+  background:rgba(0,200,150,.06);
+}
+.inp-wrap.err{border-color:#ff4d6d;box-shadow:0 0 0 4px rgba(255,77,109,.12)}
+
+.inp-pre{
+  padding:0 12px;font-size:.9rem;
+  background:rgba(0,200,150,.1);
+  align-self:stretch;display:flex;align-items:center;
+  border-right:1px solid rgba(0,200,150,.15);
+}
+.inp-suf{
+  padding:0 14px;font-size:.76rem;font-weight:800;color:#00c896;
+  background:rgba(0,200,150,.1);
+  align-self:stretch;display:flex;align-items:center;
+  border-left:1px solid rgba(0,200,150,.15);
+}
+.inp-field{
+  flex:1;background:transparent;border:none;outline:none;
+  padding:13px 12px;font-size:.97rem;
+  font-family:'Nunito',sans-serif;color:#fff;
+}
+.inp-field::placeholder{color:rgba(255,255,255,.3)}
+
+/* gender */
+.gender-row{display:flex;gap:10px}
+.g-opt{flex:1;cursor:pointer}
+.g-opt input{display:none}
+.g-chip{
+  display:flex;align-items:center;justify-content:center;
+  padding:13px;border-radius:12px;font-weight:800;font-size:.9rem;
+  background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.12);
+  color:rgba(255,255,255,.6);cursor:pointer;transition:all .2s;user-select:none;
+}
+.g-opt input:checked + .g-chip{
+  background:linear-gradient(135deg,rgba(0,200,150,.25),rgba(0,168,255,.2));
+  border-color:#00c896;color:#00ffb3;
+  box-shadow:0 0 0 3px rgba(0,200,150,.15);
+}
+
+/* error */
+.err-box{
+  display:flex;align-items:center;gap:10px;
+  background:rgba(255,77,109,.15);border:1px solid rgba(255,77,109,.3);
+  color:#ffb3c0;padding:12px 16px;border-radius:12px;
+  font-size:.88rem;font-weight:700;margin-bottom:16px;
+}
+
+/* buttons */
+.form-btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn-calc{
+  flex:1;display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  background:linear-gradient(135deg,#00c896,#00a8ff);
+  color:#fff;padding:15px 24px;border-radius:50px;
+  font-size:1rem;font-weight:800;font-family:'Nunito',sans-serif;
+  border:none;cursor:pointer;
+  box-shadow:0 4px 22px rgba(0,200,150,.4);
+  transition:transform .18s,box-shadow .18s;
+}
+.btn-calc:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,200,150,.6)}
+.btn-arrow{transition:transform .2s}
+.btn-calc:hover .btn-arrow{transform:translateX(5px)}
+.btn-rst{
+  padding:15px 26px;border-radius:50px;background:transparent;
+  color:rgba(255,255,255,.7);font-weight:800;font-family:'Nunito',sans-serif;
+  font-size:1rem;border:2px solid rgba(255,255,255,.2);cursor:pointer;
+  transition:all .2s;
+}
+.btn-rst:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.45);color:#fff}
+
+/* BMI scale guide */
+.scale-list{display:flex;flex-direction:column;gap:11px;margin-bottom:22px}
+.sc-row{
+  display:flex;align-items:center;gap:14px;
+  padding:13px 16px;border-radius:14px;transition:transform .2s;
+  border:1px solid transparent;cursor:default;
+}
+.sc-row:hover{transform:translateX(5px)}
+.sc-row.u{background:linear-gradient(135deg,rgba(59,130,246,.18),rgba(59,130,246,.06));border-color:rgba(59,130,246,.3)}
+.sc-row.n{background:linear-gradient(135deg,rgba(0,200,150,.18),rgba(0,200,150,.06));border-color:rgba(0,200,150,.3)}
+.sc-row.o{background:linear-gradient(135deg,rgba(255,160,0,.18),rgba(255,160,0,.06));border-color:rgba(255,160,0,.3)}
+.sc-row.ob{background:linear-gradient(135deg,rgba(255,77,109,.18),rgba(255,77,109,.06));border-color:rgba(255,77,109,.3)}
+
+.sc-badge{
+  min-width:88px;text-align:center;padding:5px 10px;
+  border-radius:50px;font-weight:800;font-size:.76rem;color:#fff;
+  white-space:nowrap;
+}
+.u .sc-badge{background:linear-gradient(135deg,#3b82f6,#60a5fa)}
+.n .sc-badge{background:linear-gradient(135deg,#00c896,#00ffb3);color:#003322}
+.o .sc-badge{background:linear-gradient(135deg,#f59e0b,#ffca28)}
+.ob .sc-badge{background:linear-gradient(135deg,#ef4444,#ff6b6b)}
+
+.sc-info strong{display:block;font-size:.9rem;color:#fff}
+.sc-info span{font-size:.76rem;color:rgba(255,255,255,.5)}
+.sc-em{font-size:1.5rem;margin-left:auto}
+
+.formula-box{
+  background:linear-gradient(135deg,rgba(0,200,150,.12),rgba(0,168,255,.08));
+  border:1px dashed rgba(0,255,179,.25);border-radius:14px;
+  padding:16px;text-align:center;
+}
+.formula-lbl{font-size:.7rem;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,.45);margin-bottom:5px}
+.formula-txt{font-family:'Righteous',cursive;font-size:1rem;color:#00ffb3}
+
+/* =====================================================
+   RESULTS SECTION
+===================================================== */
+.results-section{
+  background:linear-gradient(160deg,#051020 0%,#0d1f0d 40%,#1a0a28 100%);
+  position:relative;overflow:hidden;
+}
+.results-section::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,#00ffb3,#00c8ff,#ff6eb4,#ffdd00,#00c896,#a855f7,#00ffb3);
+  background-size:300% 100%;animation:rainbow 5s linear infinite;
+}
+@keyframes rainbow{to{background-position:300% 0%}}
+
+.results-section .sec-eye{
+  background:linear-gradient(90deg,#00ffb3,#00c8ff);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.results-section .sec-title{color:#fff}
+.results-section .sec-sub{color:rgba(255,255,255,.6)}
+
+/* top grid */
+.res-top{display:grid;grid-template-columns:1fr 1.6fr;gap:24px;margin-bottom:22px}
+
+/* score card */
+.score-card{
+  padding:34px;border-radius:24px;
+  background:linear-gradient(145deg,rgba(0,30,20,.9),rgba(0,10,30,.9));
+  border:1px solid rgba(0,255,179,.2);
+  box-shadow:0 8px 40px rgba(0,200,150,.15);
+  position:relative;overflow:hidden;
+  transition:transform .25s,box-shadow .25s;
+}
+.score-card:hover{transform:translateY(-4px);box-shadow:0 14px 50px rgba(0,200,150,.25)}
+.score-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:4px;border-radius:24px 24px 0 0;
+  background:var(--top-bar, linear-gradient(90deg,#00c896,#00ffb3));
+}
+.score-inner{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px;gap:16px}
+.score-lbl{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:2.5px;color:rgba(255,255,255,.5);margin-bottom:4px}
+.score-num{
+  font-family:'Righteous',cursive;
+  font-size:5.2rem;line-height:1;
+  background:linear-gradient(135deg,#00ffb3,#00c8ff);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  transition:all .4s;
+}
+.score-cat{font-size:1.1rem;font-weight:800;color:#00ffb3;transition:color .4s;margin-top:4px}
+
+.score-ring{
+  width:80px;height:80px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:2.4rem;
+  background:rgba(0,200,150,.12);border:3px solid rgba(0,255,179,.3);
+  transition:all .4s;
+}
+.score-tip{
+  font-size:.88rem;color:rgba(255,255,255,.65);line-height:1.65;
+  background:rgba(0,200,150,.08);
+  border-left:4px solid #00c896;
+  padding:12px 14px;border-radius:0 12px 12px 0;
+}
+
+/* theme overrides via CSS var */
+.theme-blue  { --top-bar:linear-gradient(90deg,#3b82f6,#60a5fa); }
+.theme-green { --top-bar:linear-gradient(90deg,#00c896,#00ffb3); }
+.theme-orange{ --top-bar:linear-gradient(90deg,#f59e0b,#ffca28); }
+.theme-red   { --top-bar:linear-gradient(90deg,#ef4444,#ff6b6b); }
+
+.theme-blue  .score-num  {background:linear-gradient(135deg,#60a5fa,#93c5fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.theme-orange .score-num {background:linear-gradient(135deg,#f59e0b,#ffca28);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.theme-red   .score-num  {background:linear-gradient(135deg,#ef4444,#ff6b6b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+.theme-blue  .score-cat  {color:#60a5fa}
+.theme-orange .score-cat {color:#ffca28}
+.theme-red   .score-cat  {color:#ff6b6b}
+
+.theme-blue  .score-ring {border-color:#3b82f6;background:rgba(59,130,246,.12)}
+.theme-orange .score-ring{border-color:#f59e0b;background:rgba(245,158,11,.12)}
+.theme-red   .score-ring {border-color:#ef4444;background:rgba(239,68,68,.12)}
+
+.theme-blue  .score-tip  {border-left-color:#3b82f6;background:rgba(59,130,246,.08)}
+.theme-orange .score-tip {border-left-color:#f59e0b;background:rgba(245,158,11,.08)}
+.theme-red   .score-tip  {border-left-color:#ef4444;background:rgba(239,68,68,.08)}
+
+/* gauge */
+.gauge-card{
+  padding:30px;border-radius:24px;
+  background:linear-gradient(145deg,rgba(0,20,40,.9),rgba(5,0,30,.9));
+  border:1px solid rgba(0,168,255,.2);
+  box-shadow:0 8px 40px rgba(0,168,255,.12);
+  transition:transform .25s;
+}
+.gauge-card:hover{transform:translateY(-4px)}
+.gauge-head{font-weight:800;font-size:.9rem;color:rgba(255,255,255,.7);margin-bottom:18px}
+
+.gauge-bar{
+  display:flex;border-radius:14px;overflow:hidden;height:52px;
+  box-shadow:0 4px 20px rgba(0,0,0,.4);
+}
+.gs{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  font-size:.65rem;font-weight:800;color:rgba(255,255,255,.95);
+  text-align:center;line-height:1.3;
+}
+.gs-u {background:linear-gradient(135deg,#3b82f6,#60a5fa)}
+.gs-n {background:linear-gradient(135deg,#00c896,#00ffb3);color:rgba(0,30,20,.9)}
+.gs-o {background:linear-gradient(135deg,#f59e0b,#ffca28);color:rgba(40,20,0,.9)}
+.gs-ob{background:linear-gradient(135deg,#ef4444,#ff6b6b)}
+
+.needle-row{position:relative;height:28px}
+.needle{
+  position:absolute;top:2px;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  transition:left 1s cubic-bezier(.34,1.56,.64,1);
+}
+.needle-pin{
+  width:5px;height:20px;background:#fff;border-radius:3px;
+  border:2px solid rgba(0,0,0,.3);box-shadow:0 2px 10px rgba(0,0,0,.5);
+}
+.needle-val{
+  font-size:.7rem;font-weight:800;color:#fff;
+  background:rgba(255,255,255,.15);padding:2px 8px;border-radius:50px;
+  backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);
+}
+.gauge-nums{
+  display:flex;justify-content:space-between;
+  font-size:.7rem;color:rgba(255,255,255,.4);
+  padding:0 2px;margin-top:4px;
+}
+.gauge-legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.leg{font-size:.72rem;font-weight:800;padding:4px 12px;border-radius:50px}
+.leg-u {background:linear-gradient(135deg,#3b82f6,#60a5fa);color:#fff}
+.leg-n {background:linear-gradient(135deg,#00c896,#00ffb3);color:#003322}
+.leg-o {background:linear-gradient(135deg,#f59e0b,#ffca28);color:#3a2000}
+.leg-ob{background:linear-gradient(135deg,#ef4444,#ff6b6b);color:#fff}
+
+/* stats strip */
+.stats-strip{
+  display:grid;grid-template-columns:repeat(5,1fr);
+  gap:14px;margin-bottom:28px;
+}
+.stat-card{
+  border-radius:18px;padding:18px 14px;
+  display:flex;align-items:center;gap:12px;
+  border:1px solid rgba(255,255,255,.08);
+  transition:transform .2s,box-shadow .2s;
+}
+.stat-card:hover{transform:translateY(-3px)}
+.stat-card:nth-child(1){background:linear-gradient(135deg,rgba(0,200,150,.25),rgba(0,200,150,.08));box-shadow:0 4px 20px rgba(0,200,150,.15)}
+.stat-card:nth-child(2){background:linear-gradient(135deg,rgba(0,168,255,.25),rgba(0,168,255,.08));box-shadow:0 4px 20px rgba(0,168,255,.15)}
+.stat-card:nth-child(3){background:linear-gradient(135deg,rgba(255,110,180,.25),rgba(255,110,180,.08));box-shadow:0 4px 20px rgba(255,110,180,.15)}
+.stat-card:nth-child(4){background:linear-gradient(135deg,rgba(255,221,0,.25),rgba(255,221,0,.08));box-shadow:0 4px 20px rgba(255,221,0,.1)}
+.stat-card:nth-child(5){background:linear-gradient(135deg,rgba(168,85,247,.25),rgba(168,85,247,.08));box-shadow:0 4px 20px rgba(168,85,247,.15)}
+.stat-icon{font-size:1.8rem}
+.stat-val{font-family:'Righteous',cursive;font-size:1.05rem;color:#fff;display:block}
+.stat-lbl{font-size:.68rem;font-weight:700;color:rgba(255,255,255,.45)}
+
+/* diet plan */
+.diet-tag{
+  display:inline-block;font-size:.72rem;font-weight:800;letter-spacing:2px;
+  text-transform:uppercase;padding:5px 16px;border-radius:50px;margin-bottom:12px;
+  background:linear-gradient(135deg,rgba(0,200,150,.2),rgba(0,168,255,.1));
+  color:#00ffb3;border:1px solid rgba(0,255,179,.2);
+}
+.diet-title{
+  font-family:'Righteous',cursive;
+  font-size:clamp(1.5rem,3vw,2rem);color:#fff;margin-bottom:12px;
+}
+.diet-intro{
+  background:linear-gradient(135deg,rgba(0,200,150,.12),rgba(0,168,255,.08));
+  border-left:4px solid #00c896;
+  padding:16px 20px;border-radius:0 14px 14px 0;
+  font-size:.95rem;color:rgba(255,255,255,.75);line-height:1.75;
+  max-width:820px;margin-bottom:28px;
+}
+
+/* eat + avoid */
+.duo-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:22px}
+
+.eat-panel{
+  background:linear-gradient(145deg,rgba(0,40,30,.9),rgba(0,60,20,.5));
+  border:1px solid rgba(0,200,150,.25);border-radius:22px;padding:28px;
+  box-shadow:0 6px 30px rgba(0,200,150,.12);
+}
+.avoid-panel{
+  background:linear-gradient(145deg,rgba(40,0,20,.9),rgba(60,0,10,.5));
+  border:1px solid rgba(255,77,109,.2);border-radius:22px;padding:28px;
+  box-shadow:0 6px 30px rgba(255,77,109,.1);
+}
+.duo-head{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:16px;padding-bottom:12px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.duo-dot{width:10px;height:10px;border-radius:50%}
+.dot-g{background:linear-gradient(135deg,#00c896,#00ffb3)}
+.dot-r{background:linear-gradient(135deg,#ef4444,#ff6b6b)}
+.duo-head h4{font-size:1rem;font-weight:800;color:#fff}
+
+.food-list li{
+  display:flex;gap:10px;align-items:flex-start;
+  padding:8px 0;font-size:.9rem;color:rgba(255,255,255,.75);
+  border-bottom:1px dashed rgba(255,255,255,.07);line-height:1.5;
+}
+.food-list li:last-child{border-bottom:none}
+
+/* meal plan */
+.meal-wrap{
+  background:linear-gradient(145deg,rgba(20,15,0,.9),rgba(30,20,0,.7));
+  border:1px solid rgba(255,200,0,.2);border-radius:22px;
+  padding:28px;margin-bottom:22px;
+  box-shadow:0 6px 30px rgba(255,180,0,.1);
+}
+.meal-wrap-title{font-size:1rem;font-weight:800;color:#fff;margin-bottom:18px}
+.meal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}
+.meal-card{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,200,0,.15);
+  border-radius:14px;padding:18px;
+  transition:transform .2s,box-shadow .2s;
+  backdrop-filter:blur(8px);
+}
+.meal-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(255,180,0,.2)}
+.meal-time{
+  font-size:.67rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;
+  background:linear-gradient(90deg,#ffb300,#ff6f00);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:6px;
+}
+.meal-ico{font-size:1.6rem;display:block;margin-bottom:6px}
+.meal-desc{font-size:.84rem;color:rgba(255,255,255,.68);line-height:1.55}
+
+/* exercise */
+.ex-wrap{
+  background:linear-gradient(145deg,rgba(0,15,40,.9),rgba(5,20,50,.7));
+  border:1px solid rgba(0,168,255,.2);border-radius:22px;
+  padding:28px;
+  box-shadow:0 6px 30px rgba(0,168,255,.1);
+}
+.ex-title{font-size:1rem;font-weight:800;color:#fff;margin-bottom:18px}
+.ex-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ex-item{
+  display:flex;gap:10px;align-items:flex-start;
+  background:rgba(0,168,255,.07);
+  border:1px solid rgba(0,168,255,.15);
+  border-radius:12px;padding:14px;
+  font-size:.87rem;color:rgba(255,255,255,.72);line-height:1.55;
+  transition:border-color .2s,transform .2s;
+}
+.ex-item:hover{border-color:rgba(0,168,255,.4);transform:translateX(4px)}
+
+/* =====================================================
+   TIPS SECTION
+===================================================== */
+.tips-section{
+  background:linear-gradient(160deg,#08001f 0%,#001a10 50%,#1a0010 100%);
+  position:relative;overflow:hidden;
+}
+.tips-section::before{
+  content:'';position:absolute;top:-180px;right:-120px;
+  width:550px;height:550px;border-radius:50%;
+  background:radial-gradient(circle,rgba(168,85,247,.18) 0%,transparent 70%);
+  pointer-events:none;
+}
+.tips-section::after{
+  content:'';position:absolute;bottom:-120px;left:-100px;
+  width:500px;height:500px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,200,150,.14) 0%,transparent 70%);
+  pointer-events:none;
+}
+.tips-section .sec-eye{
+  background:linear-gradient(90deg,#a855f7,#ec4899);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.tips-section .sec-title{color:#fff}
+.tips-section .sec-sub{color:rgba(255,255,255,.58)}
+
+.tips-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:20px;position:relative;z-index:1;
+}
+.tip-card{
+  border-radius:22px;padding:28px;
+  border:1px solid rgba(255,255,255,.08);
+  transition:transform .25s,box-shadow .25s;
+  position:relative;overflow:hidden;
+}
+.tip-card::after{
+  content:'';position:absolute;top:-20px;right:-20px;
+  width:100px;height:100px;border-radius:50%;opacity:.15;
+}
+.tip-card:hover{transform:translateY(-6px)}
+
+.tip-card:nth-child(1){background:linear-gradient(145deg,rgba(0,168,255,.2),rgba(0,168,255,.05));box-shadow:0 6px 30px rgba(0,168,255,.2)}
+.tip-card:nth-child(1)::after{background:#00a8ff}
+.tip-card:nth-child(2){background:linear-gradient(145deg,rgba(0,200,150,.2),rgba(0,200,150,.05));box-shadow:0 6px 30px rgba(0,200,150,.18)}
+.tip-card:nth-child(2)::after{background:#00c896}
+.tip-card:nth-child(3){background:linear-gradient(145deg,rgba(255,160,0,.2),rgba(255,160,0,.05));box-shadow:0 6px 30px rgba(255,160,0,.15)}
+.tip-card:nth-child(3)::after{background:#ffa000}
+.tip-card:nth-child(4){background:linear-gradient(145deg,rgba(168,85,247,.2),rgba(168,85,247,.05));box-shadow:0 6px 30px rgba(168,85,247,.18)}
+.tip-card:nth-child(4)::after{background:#a855f7}
+.tip-card:nth-child(5){background:linear-gradient(145deg,rgba(255,110,180,.2),rgba(255,110,180,.05));box-shadow:0 6px 30px rgba(255,110,180,.15)}
+.tip-card:nth-child(5)::after{background:#ff6eb4}
+.tip-card:nth-child(6){background:linear-gradient(145deg,rgba(255,80,80,.2),rgba(255,80,80,.05));box-shadow:0 6px 30px rgba(255,80,80,.15)}
+.tip-card:nth-child(6)::after{background:#ff5050}
+
+.tip-ico{font-size:2.6rem;display:block;margin-bottom:14px;filter:drop-shadow(0 4px 12px rgba(0,0,0,.3))}
+.tip-card h4{font-weight:800;font-size:1.05rem;color:#fff;margin-bottom:8px}
+.tip-card p{font-size:.9rem;color:rgba(255,255,255,.65);line-height:1.72}
+
+/* =====================================================
+   FOOTER
+===================================================== */
+.footer{
+  background:linear-gradient(145deg,#010208 0%,#00100a 50%,#080012 100%);
+  color:rgba(255,255,255,.65);padding:60px 24px 40px;
+  position:relative;overflow:hidden;text-align:center;
+}
+.footer::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,#00ffb3,#00c8ff,#ff6eb4,#ffdd00,#a855f7,#00ffb3);
+  background-size:300% 100%;animation:rainbow 5s linear infinite;
+}
+.footer-logo{
+  font-family:'Righteous',cursive;font-size:1.8rem;
+  background:linear-gradient(90deg,#00ffb3,#00c8ff,#ff6eb4);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:6px;
+}
+.footer-tag{
+  font-size:.8rem;font-weight:700;letter-spacing:1.5px;
+  color:rgba(255,255,255,.45);margin-bottom:18px;
+}
+.footer-links{display:flex;gap:22px;justify-content:center;margin-bottom:18px}
+.footer-links a{font-size:.9rem;color:rgba(255,255,255,.45);transition:color .18s}
+.footer-links a:hover{color:#00ffb3}
+.footer-disc{
+  font-size:.78rem;color:rgba(255,255,255,.28);
+  max-width:580px;margin:0 auto 10px;line-height:1.6;
+}
+.footer-copy{font-size:.75rem;color:rgba(255,255,255,.2)}
+
+/* =====================================================
+   REVEAL ANIMATION
+===================================================== */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .6s ease,transform .6s ease}
+.reveal.in{opacity:1;transform:translateY(0)}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+@media(max-width:960px){
+  .hero-visual{display:none}
+  .calc-grid{grid-template-columns:1fr}
+  .res-top{grid-template-columns:1fr}
+  .stats-strip{grid-template-columns:repeat(3,1fr)}
+  .ex-grid{grid-template-columns:1fr}
+}
+@media(max-width:720px){
+  .section{padding:72px 0 60px}
+  .nav-toggle{display:flex}
+  .nav-links{
+    display:none;position:fixed;top:64px;left:0;right:0;
+    flex-direction:column;background:rgba(6,10,20,.97);
+    padding:20px 24px;gap:4px;z-index:999;
+    border-bottom:1px solid rgba(0,200,150,.15);
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{width:100%;text-align:center;padding:12px}
+  .inp-grid{grid-template-columns:1fr}
+  .glass-panel{padding:24px 18px}
+  .duo-grid{grid-template-columns:1fr}
+  .meal-grid{grid-template-columns:1fr 1fr}
+  .stats-strip{grid-template-columns:1fr 1fr}
+  .score-num{font-size:3.8rem}
+  .form-btns{flex-direction:column}
+  .btn-calc,.btn-rst{width:100%;justify-content:center}
+}
+@media(max-width:480px){
+  .hero-h1{font-size:2.2rem}
+  .stats-strip{grid-template-columns:1fr 1fr}
+  .meal-grid{grid-template-columns:1fr}
+  .gauge-bar{height:40px}
+  .gs{font-size:.58rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <div class="nav-logo">🥗 VitalPlan</div>
+    <button class="nav-toggle" id="navToggle" aria-label="menu">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="navLinks">
+      <a href="#home">Home</a>
+      <a href="#calc">Calculator</a>
+      <a href="#results">Results</a>
+      <a href="#tips">Tips</a>
+      <a href="#calc" class="nav-cta">Check BMI</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section id="home" class="hero">
+  <div class="hero-orb3"></div>
+  <div class="hero-grid"></div>
+
+  <!-- floating food emojis -->
+  <div class="floaters">
+    <span style="--d:0s;left:7%;top:28%">🥦</span>
+    <span style="--d:.7s;left:89%;top:22%">🍎</span>
+    <span style="--d:1.3s;left:10%;top:70%">🥕</span>
+    <span style="--d:.4s;left:83%;top:65%">🥑</span>
+    <span style="--d:1s;left:48%;top:78%">🍋</span>
+    <span style="--d:1.6s;left:20%;top:48%">💧</span>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-chip">
+      <span class="chip-dot"></span>
+      AI-Powered Health Intelligence
+    </div>
+
+    <h1 class="hero-h1">
+      Smart Diet Planner<br/>
+      <span>using BMI</span>
+    </h1>
+
+    <p class="hero-sub">
+      Calculate your <strong>Body Mass Index</strong> in seconds and unlock
+      a personalized nutrition plan built for your body. Science-backed. Free.
+    </p>
+
+    <div class="hero-btns">
+      <a href="#calc" class="btn-main">Start BMI Check <span class="btn-arrow">→</span></a>
+      <a href="#tips" class="btn-out">View Health Tips</a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="hstat">🎯 Instant BMI Score</div>
+      <div class="hstat">🥗 Real Diet Plans</div>
+      <div class="hstat">💪 Exercise Tips</div>
+      <div class="hstat">🔒 100% Private</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CALCULATOR ===== -->
+<section id="calc" class="section calc-section">
+  <div class="wrap">
+    <div class="sec-eye">BMI Calculator</div>
+    <h2 class="sec-title">Know Your Numbers</h2>
+    <p class="sec-sub">Enter your details below — your personalised plan generates instantly.</p>
+
+    <div class="calc-grid reveal">
+
+      <!-- FORM -->
+      <div class="glass-panel form-glass">
+        <div class="panel-head">
+          <span class="panel-head-icon">📐</span>
+          <div>
+            <div class="panel-head-title">Your Body Details</div>
+            <div class="panel-head-sub">All data stays on your device</div>
+          </div>
+        </div>
+
+        <div class="inp-grid">
+          <div class="inp-group">
+            <label class="inp-label">📏 Height</label>
+            <div class="inp-wrap" id="wH">
+              <span class="inp-pre">cm</span>
+              <input class="inp-field" type="number" id="height" placeholder="e.g. 170" min="50" max="250"/>
+            </div>
+          </div>
+
+          <div class="inp-group">
+            <label class="inp-label">⚖️ Weight</label>
+            <div class="inp-wrap" id="wW">
+              <span class="inp-pre">kg</span>
+              <input class="inp-field" type="number" id="weight" placeholder="e.g. 65" min="10" max="300"/>
+            </div>
+          </div>
+
+          <div class="inp-group">
+            <label class="inp-label">🎂 Age</label>
+            <div class="inp-wrap" id="wA">
+              <span class="inp-pre">yr</span>
+              <input class="inp-field" type="number" id="age" placeholder="e.g. 25" min="5" max="120"/>
+            </div>
+          </div>
+
+          <div class="inp-group">
+            <label class="inp-label">👤 Gender</label>
+            <div class="gender-row">
+              <label class="g-opt"><input type="radio" name="gender" value="male" checked/><span class="g-chip">♂ Male</span></label>
+              <label class="g-opt"><input type="radio" name="gender" value="female"/><span class="g-chip">♀ Female</span></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="err-box" id="errBox" style="display:none">
+          <span>⚠️</span><span id="errText"></span>
+        </div>
+
+        <div class="form-btns">
+          <button class="btn-calc" onclick="calcBMI()">
+            <span>Calculate BMI</span><span class="btn-arrow">→</span>
+          </button>
+          <button class="btn-rst" onclick="resetAll()">↺ Reset</button>
+        </div>
+      </div>
+
+      <!-- BMI GUIDE -->
+      <div class="glass-panel info-glass">
+        <div class="panel-head">
+          <span class="panel-head-icon">📊</span>
+          <div>
+            <div class="panel-head-title">BMI Scale Guide</div>
+            <div class="panel-head-sub">What the numbers mean for you</div>
+          </div>
+        </div>
+
+        <div class="scale-list">
+          <div class="sc-row u">
+            <span class="sc-badge">&lt; 18.5</span>
+            <div class="sc-info"><strong>Underweight</strong><span>May need healthy weight gain</span></div>
+            <span class="sc-em">💪</span>
+          </div>
+          <div class="sc-row n">
+            <span class="sc-badge">18.5–24.9</span>
+            <div class="sc-info"><strong>Normal Weight</strong><span>Healthy range — keep it up!</span></div>
+            <span class="sc-em">🌟</span>
+          </div>
+          <div class="sc-row o">
+            <span class="sc-badge">25–29.9</span>
+            <div class="sc-info"><strong>Overweight</strong><span>Lifestyle changes advised</span></div>
+            <span class="sc-em">⚠️</span>
+          </div>
+          <div class="sc-row ob">
+            <span class="sc-badge">30+</span>
+            <div class="sc-info"><strong>Obese</strong><span>Consult a health professional</span></div>
+            <span class="sc-em">🏥</span>
+          </div>
+        </div>
+
+        <div class="formula-box">
+          <div class="formula-lbl">The BMI Formula</div>
+          <div class="formula-txt">BMI = Weight (kg) ÷ Height² (m)</div>
+        </div>
+      </div>
+    </div><!-- /calc-grid -->
+  </div>
+</section>
+
+<!-- ===== RESULTS ===== -->
+<section id="results" class="section results-section" style="display:none">
+  <div class="wrap">
+    <div class="sec-eye">Your Results</div>
+    <h2 class="sec-title">BMI Dashboard</h2>
+
+    <div class="res-top">
+      <!-- Score -->
+      <div class="score-card" id="scoreCard">
+        <div class="score-inner">
+          <div>
+            <div class="score-lbl">Your BMI Score</div>
+            <div class="score-num" id="scoreNum">--</div>
+            <div class="score-cat" id="scoreCat">--</div>
+          </div>
+          <div class="score-ring" id="scoreRing">📊</div>
+        </div>
+        <p class="score-tip" id="scoreTip"></p>
+      </div>
+
+      <!-- Gauge -->
+      <div class="gauge-card">
+        <div class="gauge-head">📈 BMI Progress Indicator — Where You Stand</div>
+
+        <div class="gauge-bar">
+          <div class="gs gs-u">Under<br/>weight<br/>&lt;18.5</div>
+          <div class="gs gs-n">Normal<br/>18.5–24.9</div>
+          <div class="gs gs-o">Over<br/>weight<br/>25–29.9</div>
+          <div class="gs gs-ob">Obese<br/>30+</div>
+        </div>
+
+        <div class="needle-row">
+          <div class="needle" id="needle">
+            <div class="needle-pin"></div>
+            <div class="needle-val" id="needleVal">--</div>
+          </div>
+        </div>
+
+        <div class="gauge-nums">
+          <span>15</span><span>18.5</span><span>25</span><span>30</span><span>40</span>
+        </div>
+
+        <div class="gauge-legend">
+          <span class="leg leg-u">Underweight</span>
+          <span class="leg leg-n">Normal</span>
+          <span class="leg leg-o">Overweight</span>
+          <span class="leg leg-ob">Obese</span>
+        </div>
+      </div>
+    </div><!-- /res-top -->
+
+    <!-- STATS STRIP -->
+    <div class="stats-strip" id="statsStrip">
+      <div class="stat-card">
+        <span class="stat-icon">🎯</span>
+        <div><span class="stat-val" id="sBMI">--</span><span class="stat-lbl">BMI Score</span></div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">📏</span>
+        <div><span class="stat-val" id="sH">--</span><span class="stat-lbl">Height</span></div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">⚖️</span>
+        <div><span class="stat-val" id="sW">--</span><span class="stat-lbl">Weight</span></div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">🎂</span>
+        <div><span class="stat-val" id="sAge">--</span><span class="stat-lbl">Age</span></div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">✅</span>
+        <div><span class="stat-val" id="sIdeal">--</span><span class="stat-lbl">Ideal Range (kg)</span></div>
+      </div>
+    </div>
+
+    <!-- DIET PLAN -->
+    <div id="dietArea">
+      <div class="diet-tag" id="dietTag">Your Plan</div>
+      <h3 class="diet-title" id="dietTitle">Personalised Diet Plan</h3>
+      <p class="diet-intro" id="dietIntro"></p>
+
+      <div class="duo-grid">
+        <div class="eat-panel">
+          <div class="duo-head">
+            <span class="duo-dot dot-g"></span>
+            <h4>✅ Eat More Of</h4>
+          </div>
+          <ul class="food-list" id="eatList"></ul>
+        </div>
+        <div class="avoid-panel">
+          <div class="duo-head">
+            <span class="duo-dot dot-r"></span>
+            <h4>❌ Avoid These</h4>
+          </div>
+          <ul class="food-list" id="avoidList"></ul>
+        </div>
+      </div>
+
+      <div class="meal-wrap">
+        <div class="meal-wrap-title">🍽️ Sample Daily Meal Plan</div>
+        <div class="meal-grid" id="mealGrid"></div>
+      </div>
+
+      <div class="ex-wrap">
+        <div class="ex-title">🏃 Exercise &amp; Lifestyle Tips</div>
+        <div class="ex-grid" id="exGrid"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TIPS ===== -->
+<section id="tips" class="section tips-section">
+  <div class="wrap">
+    <div class="sec-eye">Wellness Guide</div>
+    <h2 class="sec-title">Daily Health Tips</h2>
+    <p class="sec-sub">Small consistent habits that compound into lifelong health.</p>
+
+    <div class="tips-grid">
+      <div class="tip-card reveal">
+        <span class="tip-ico">💧</span>
+        <h4>Stay Hydrated</h4>
+        <p>Drink 8–10 glasses of water every day. Water flushes toxins, boosts your metabolism, and keeps your energy levels steady all day long.</p>
+      </div>
+      <div class="tip-card reveal">
+        <span class="tip-ico">🥗</span>
+        <h4>Eat the Rainbow</h4>
+        <p>Fill half your plate with colourful vegetables. Every colour delivers unique vitamins, minerals, and antioxidants your body needs to thrive.</p>
+      </div>
+      <div class="tip-card reveal">
+        <span class="tip-ico">🚶</span>
+        <h4>Walk 30 Min Daily</h4>
+        <p>A brisk 30-minute walk reduces heart disease risk by up to 30%, burns 150+ calories, and powerfully boosts mental clarity and mood.</p>
+      </div>
+      <div class="tip-card reveal">
+        <span class="tip-ico">😴</span>
+        <h4>Sleep 7–8 Hours</h4>
+        <p>Quality sleep regulates hunger hormones (leptin &amp; ghrelin). Chronic sleep deprivation is directly linked to weight gain and low energy.</p>
+      </div>
+      <div class="tip-card reveal">
+        <span class="tip-ico">🍽️</span>
+        <h4>Eat Mindfully</h4>
+        <p>Eat slowly and avoid screens during meals. Your brain takes 20 minutes to register fullness — slow down and enjoy every bite.</p>
+      </div>
+      <div class="tip-card reveal">
+        <span class="tip-ico">🧘</span>
+        <h4>Manage Stress</h4>
+        <p>High cortisol promotes belly fat storage. Even 10 minutes of daily deep breathing or meditation makes a measurable health difference.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="footer-logo">🥗 VitalPlan</div>
+  <p class="footer-tag">SMART DIET PLANNER USING BMI</p>
+  <div class="footer-links">
+    <a href="#home">Home</a>
+    <a href="#calc">Calculator</a>
+    <a href="#tips">Tips</a>
+  </div>
+  <p class="footer-disc">⚠️ VitalPlan is for informational purposes only. Always consult a qualified doctor or registered dietitian for personalised medical advice.</p>
+  <p class="footer-copy">© 2025 VitalPlan. Built with ❤️ for healthier lives.</p>
+</footer>
+
+<script>
+/* =======================================================
+   DIET PLAN DATABASE — 4 complete personalised plans
+======================================================= */
+const PLANS = {
+  underweight: {
+    emoji:"💪", theme:"theme-blue",
+    tip:"Focus on calorie-dense, nutrient-rich whole foods to build healthy weight gradually.",
+    intro:"Your BMI is below 18.5, placing you in the underweight range. The goal is to gain weight sustainably through nutritious, high-calorie foods — not junk. Aim to add 300–500 extra calories daily from wholesome sources like eggs, nuts, dairy, and whole grains.",
+    eat:["🥚 Eggs — boiled, scrambled or as omelettes","🥛 Full-fat milk, paneer, cheese, yoghurt","🥜 Nuts & nut butters (almonds, peanut butter)","🍌 Bananas and dried fruits (dates, raisins)","🍚 Rice, whole wheat roti, pasta, bread","🥔 Potatoes and sweet potatoes","🐟 Fatty fish: salmon, tuna, sardines","🫒 Olive oil & coconut oil on everything","🌾 Oats and granola with full-fat milk","🫘 Lentils, chickpeas, kidney beans"],
+    avoid:["🚫 Skipping any meal — even small snacks count","🚫 Excessive caffeine (suppresses appetite)","🚫 Empty-calorie junk food & deep fries","🚫 Diet or 'light' / low-fat products","🚫 Large amounts of water immediately before meals","🚫 Too much cardio without strength training"],
+    meals:[{ico:"🌅",t:"Breakfast",d:"Oats with full-fat milk + banana + 2 boiled eggs + mixed nuts"},{ico:"🍏",t:"Mid-Morning",d:"Whole wheat toast with peanut butter + full-fat milk"},{ico:"🍽️",t:"Lunch",d:"Rice or pasta + chicken/lentil curry + salad with olive oil"},{ico:"☕",t:"Evening",d:"Banana-milk-nut smoothie + small handful of dried fruits"},{ico:"🌙",t:"Dinner",d:"Whole wheat roti + paneer or egg curry + sautéed vegetables"}],
+    exercise:["🏋️ Strength training 3–4×/week to build muscle mass","🚶 Light walking 20–30 min — avoid heavy cardio","🧘 Yoga & stretching to stimulate appetite","⏰ Eat every 3–4 hours; set reminders if needed","💤 Sleep 8–9 hours — muscles grow during rest","📊 Track calories until you hit your daily target"]
+  },
+  normal: {
+    emoji:"🌟", theme:"theme-green",
+    tip:"Excellent! Maintain this healthy balance with whole foods and regular movement.",
+    intro:"Your BMI is 18.5–24.9 — you're at a healthy weight! Your goal is maintaining this through a varied, nutrient-rich diet and consistent activity. Focus on whole foods, staying hydrated, and building sustainable habits you can carry for life.",
+    eat:["🥦 Colourful vegetables: broccoli, spinach, peppers","🍎 Fresh whole fruits: apples, berries, oranges","🌾 Whole grains: brown rice, quinoa, oats, millet","🍗 Lean proteins: grilled chicken, fish, tofu","🫘 Legumes: lentils, beans, chickpeas","🥑 Healthy fats: avocado, olive oil, nuts, seeds","🥛 Low-fat dairy or plant-based milk","💧 Water — at least 8 large glasses daily","🌰 Chia, flax and sunflower seeds","🧄 Herbs & spices instead of excess salt"],
+    avoid:["🚫 Processed and packaged snacks","🚫 Sugary drinks: sodas and store-bought juices","🚫 Deep-fried foods more than once a week","🚫 Excess alcohol — high in empty calories","🚫 Heavy meals late at night","🚫 Refined white-flour products in large quantities"],
+    meals:[{ico:"🌅",t:"Breakfast",d:"Overnight oats with berries + chia seeds + green tea"},{ico:"🍏",t:"Mid-Morning",d:"Seasonal fruit + small handful of mixed nuts or seeds"},{ico:"🍽️",t:"Lunch",d:"Grilled chicken or tofu + brown rice + stir-fried vegetables"},{ico:"☕",t:"Evening",d:"Hummus with veggie sticks (carrot, cucumber, celery)"},{ico:"🌙",t:"Dinner",d:"Baked fish or dal + whole wheat roti + steamed greens"}],
+    exercise:["🏃 30–45 min moderate cardio 5×/week: jog, cycle or swim","🏋️ Strength training 2–3×/week to preserve lean muscle","🧘 Yoga or stretching for flexibility & stress management","🚴 Active hobbies: badminton, dancing, hiking","🚶 10,000 steps daily — take stairs, walk short distances","💧 Stay hydrated — mild dehydration reduces energy"]
+  },
+  overweight: {
+    emoji:"⚠️", theme:"theme-orange",
+    tip:"Small consistent changes to diet & activity will bring you back to a healthy range.",
+    intro:"Your BMI is 25–29.9, placing you in the overweight range. Small, sustainable changes — not crash diets — are most effective. Reduce calories by 300–500/day, swap processed foods for whole foods, and increase daily movement. Consistency beats perfection every time.",
+    eat:["🥗 Large salads with lemon-olive oil dressing","🥦 Non-starchy vegetables in unlimited quantity","🍎 Whole fresh fruits (not juices — eat the fibre)","🍗 Grilled or baked chicken, fish, or eggs","🫘 Lentils & beans — high fibre, filling, low calorie","🍵 Green tea — gently boosts metabolism","💧 A glass of water before each meal","🌾 Small portions of whole grains: quinoa, oats only","🥒 Cucumber, celery, tomatoes as zero-calorie snacks","🧄 Garlic, turmeric, ginger — anti-inflammatory"],
+    avoid:["🚫 Sugary drinks: sodas and packaged fruit juices","🚫 White bread, white rice, refined maida products","🚫 All fried foods and fast food","🚫 Sweets, cakes, biscuits and pastries","🚫 Alcohol — high in empty calories","🚫 Mindless snacking in front of screens","🚫 Oversized portions — switch to a smaller plate"],
+    meals:[{ico:"🌅",t:"Breakfast",d:"2 scrambled eggs + spinach + multigrain toast + green tea (no sugar)"},{ico:"🍏",t:"Mid-Morning",d:"1 apple or pear + black coffee or herbal tea"},{ico:"🍽️",t:"Lunch",d:"Grilled chicken or fish + large salad + small quinoa portion"},{ico:"☕",t:"Evening",d:"Clear vegetable soup or cucumber-tomato salad with lemon"},{ico:"🌙",t:"Dinner",d:"Stir-fried vegetables with tofu or grilled fish — before 8 PM"}],
+    exercise:["🚶 45–60 min brisk walk every day — the #1 habit for weight loss","🏊 Swimming or cycling 3–4×/week — easy on joints","🏋️ Light strength training 2×/week to raise metabolism","🧘 Yoga to reduce cortisol — stress causes weight gain","📱 Track daily steps; target 10,000","⏰ Never sit for more than 60 min without moving"]
+  },
+  obese: {
+    emoji:"🏥", theme:"theme-red",
+    tip:"Every small step counts. Even 5–10% weight loss significantly improves your health.",
+    intro:"Your BMI is 30+, classified as obese. This raises risk of diabetes, heart disease, and joint issues. However, losing just 5–10% of body weight produces significant health improvements. Start with gentle, sustainable changes. Please consult a doctor or registered dietitian for personalised medical guidance.",
+    eat:["🥦 Non-starchy vegetables — fill most of your plate","🥗 Large salads with olive oil and lemon only","🍳 Boiled or poached eggs (avoid frying)","🫘 Lentils, chickpeas — keep you full for hours","🍵 Green tea and herbal teas throughout the day","💧 Drink a full glass of water before every meal","🥒 Cucumber, celery, tomatoes as snacks","🧄 Garlic, turmeric, cinnamon — reduce inflammation","🍋 Warm lemon water every morning on empty stomach","🌾 A small bowl of plain oats if carbs are needed"],
+    avoid:["🚫 All sugary foods and beverages including 'diet' sodas","🚫 All fried and ultra-processed foods","🚫 White bread, white rice, pasta, maida","🚫 Processed meats: sausages, salami, hot dogs","🚫 Full-fat cheese, butter, heavy cream","🚫 Alcohol — completely if possible","🚫 Eating after 7 PM","🚫 Oversized portions — use a visibly smaller plate","🚫 Packaged snacks even labelled 'healthy'"],
+    meals:[{ico:"🌅",t:"Breakfast",d:"2 boiled eggs + cucumber-tomato slices + warm lemon water. No bread."},{ico:"🍏",t:"Mid-Morning",d:"Green tea + 5 raw almonds. Nothing else."},{ico:"🍽️",t:"Lunch",d:"Large salad + grilled chicken or fish + small lentil soup"},{ico:"☕",t:"Evening",d:"Clear vegetable broth or herbal tea. No solid snacks."},{ico:"🌙",t:"Dinner",d:"Stir-fried vegetables (min oil) + tofu or fish. Before 7 PM."}],
+    exercise:["🚶 Start with two 15-min gentle walks daily — build weekly","🏊 Water aerobics or swimming — very gentle on joints","🧘 Chair yoga or seated stretches to begin without strain","📅 Increase activity by just 5 min each week","👨‍⚕️ Consult a doctor before any intense exercise","💤 Prioritise 7–8 hours sleep — poor sleep worsens obesity","🧠 Consider a nutritionist or health coach for support"]
+  }
+};
+
+/* ── Calculate BMI ── */
+function calcBMI(){
+  const h=parseFloat(document.getElementById('height').value);
+  const w=parseFloat(document.getElementById('weight').value);
+  const a=parseInt(document.getElementById('age').value);
+  const g=document.querySelector('input[name="gender"]:checked').value;
+
+  // clear errors
+  ['wH','wW','wA'].forEach(id=>document.getElementById(id).classList.remove('err'));
+  document.getElementById('errBox').style.display='none';
+  const errs=[];
+  if(!h||h<50||h>250){document.getElementById('wH').classList.add('err');errs.push('Height: 50–250 cm')}
+  if(!w||w<10||w>300){document.getElementById('wW').classList.add('err');errs.push('Weight: 10–300 kg')}
+  if(!a||a<5||a>120){document.getElementById('wA').classList.add('err');errs.push('Age: 5–120 yrs')}
+  if(errs.length){
+    document.getElementById('errText').textContent='Please fix: '+errs.join(' | ');
+    document.getElementById('errBox').style.display='flex';
+    return;
+  }
+
+  const hm=h/100;
+  const bmi=(w/(hm*hm)).toFixed(1);
+  let key,label;
+  if(bmi<18.5){key='underweight';label='Underweight'}
+  else if(bmi<25){key='normal';label='Normal Weight'}
+  else if(bmi<30){key='overweight';label='Overweight'}
+  else{key='obese';label='Obese'}
+
+  const idealMin=(18.5*hm*hm).toFixed(1);
+  const idealMax=(24.9*hm*hm).toFixed(1);
+
+  renderResults({bmi,key,label,h,w,a,g,idealMin,idealMax});
+
+  document.getElementById('results').style.display='block';
+  setTimeout(()=>document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'}),100);
+}
+
+/* ── Render ── */
+function renderResults({bmi,key,label,h,w,a,g,idealMin,idealMax}){
+  const p=PLANS[key];
+  const sc=document.getElementById('scoreCard');
+
+  // remove old themes
+  sc.classList.remove('theme-blue','theme-green','theme-orange','theme-red');
+  sc.classList.add(p.theme);
+
+  document.getElementById('scoreNum').textContent=bmi;
+  document.getElementById('scoreCat').textContent=label;
+  document.getElementById('scoreRing').textContent=p.emoji;
+  document.getElementById('scoreTip').textContent=p.tip;
+
+  // needle — map 15–40 → 0–100%
+  const pct=((Math.min(Math.max(parseFloat(bmi),15),40)-15)/25)*100;
+  document.getElementById('needle').style.left=pct+'%';
+  document.getElementById('needleVal').textContent=bmi;
+
+  // stats
+  document.getElementById('sBMI').textContent=bmi;
+  document.getElementById('sH').textContent=h+' cm';
+  document.getElementById('sW').textContent=w+' kg';
+  document.getElementById('sAge').textContent=a+' yrs';
+  document.getElementById('sIdeal').textContent=idealMin+'–'+idealMax;
+
+  // diet
+  const gL=g==='male'?'Men':'Women';
+  document.getElementById('dietTag').textContent=label+' Plan — '+gL;
+  document.getElementById('dietTitle').textContent='Your Personalised Diet Plan';
+  document.getElementById('dietIntro').textContent=p.intro;
+
+  const eatUl=document.getElementById('eatList');
+  eatUl.innerHTML='';
+  p.eat.forEach(x=>{const li=document.createElement('li');li.textContent=x;eatUl.appendChild(li)});
+
+  const avUl=document.getElementById('avoidList');
+  avUl.innerHTML='';
+  p.avoid.forEach(x=>{const li=document.createElement('li');li.textContent=x;avUl.appendChild(li)});
+
+  const mg=document.getElementById('mealGrid');
+  mg.innerHTML='';
+  p.meals.forEach(m=>{
+    mg.innerHTML+=`<div class="meal-card"><span class="meal-ico">${m.ico}</span><div class="meal-time">${m.t}</div><div class="meal-desc">${m.d}</div></div>`;
+  });
+
+  const eg=document.getElementById('exGrid');
+  eg.innerHTML='';
+  p.exercise.forEach(x=>{
+    eg.innerHTML+=`<div class="ex-item">${x}</div>`;
+  });
+}
+
+/* ── Reset ── */
+function resetAll(){
+  ['height','weight','age'].forEach(id=>document.getElementById(id).value='');
+  document.querySelector('input[value="male"]').checked=true;
+  ['wH','wW','wA'].forEach(id=>document.getElementById(id).classList.remove('err'));
+  document.getElementById('errBox').style.display='none';
+  document.getElementById('results').style.display='none';
+  document.getElementById('calc').scrollIntoView({behavior:'smooth'});
+}
+
+/* ── Navbar ── */
+document.getElementById('navToggle').addEventListener('click',()=>{
+  document.getElementById('navLinks').classList.toggle('open');
+});
+document.querySelectorAll('.nav-links a').forEach(a=>{
+  a.addEventListener('click',()=>document.getElementById('navLinks').classList.remove('open'));
+});
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').style.background=
+    window.scrollY>50?'rgba(6,10,20,0.97)':'rgba(6,10,20,0.88)';
+},{passive:true});
+
+/* ── Scroll reveal ── */
+const ro=new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{
+    if(e.isIntersecting){
+      setTimeout(()=>e.target.classList.add('in'),i*80);
+      ro.unobserve(e.target);
+    }
+  });
+},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+
+/* ── Enter key ── */
+document.querySelectorAll('.inp-field').forEach(inp=>{
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter')calcBMI()});
+});
+</script>
+</body>
+</html>
